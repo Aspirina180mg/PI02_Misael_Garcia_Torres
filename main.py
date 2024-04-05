@@ -26,10 +26,11 @@ Requisitos:
 """
 
 import streamlit as st
+import pandas as pd
 
-#! lectura de los datos
-# df_homicidios = pd.read_csv("df_PlayTimeGenre.csv", header=0)
-# df_lesiones = pd.read_csv("df_UserForGenre.csv", header=0)
+# lectura de los datos
+df_homicidios = pd.read_parquet("Datasets/df_homicidios.parquet")
+df_lesiones = pd.read_parquet("Datasets/df_lesiones.parquet")
 
 
 def mostrar_dataframe(incidente):
