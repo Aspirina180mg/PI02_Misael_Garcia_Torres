@@ -97,13 +97,13 @@ def dashboard():
         st.markdown(f"<h5 style='text-align:center;'>Este semestre: {conductor_homicidio}</h5>", unsafe_allow_html=True)
         st.markdown(f"<h5 style='text-align:center;'>Promedio: {conductor_promedio}</h5>", unsafe_allow_html=True)
 
-    with col4:  #KPI2
+    with col4:  #TODO KPI2
         st.markdown("<h4 style='text-align:center;'>Diferencia fallecimiento Moto Anual</h4>", unsafe_allow_html=True)
 
-    with col5:  #KPI1
+    with col5:  #TODO KPI1
         st.markdown("<h4 style='text-align:center;'>Diferencia Tasa Homicidios últimos 6 meses</h4>", unsafe_allow_html=True)
 
-    with col6:  #KPI3
+    with col6:  #TODO KPI3
         st.markdown("<h4 style='text-align:center;'>Diferencia fallecimiento de conductores anual</h4>", unsafe_allow_html=True)
 
     with col7:
