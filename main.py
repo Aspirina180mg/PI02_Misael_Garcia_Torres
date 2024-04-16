@@ -18,58 +18,94 @@ def dashboard():
     col4, col5, col6 = st.columns([1, 1, 1])  # Segunda fila
     col7, col8, col9 = st.columns([1, 1, 1])  # Tercera fila
 
-    # Filtros
+    #TODO Filtros
     # implementar filtros, por ahora sólo usar la totalidad de los datos
     # hay que permitir seleccionar los datos a placer, y que los gráficos se actualicen a demanda
     # por ahora utilziar df_filtrado, pero sin filtrar
+    #?-Fecha Accidente
+    #?-Hora Accidente
+    #?-Edad Víctima
+    #?-Acusado del Homicidio
+    #?-Victima
+    #?-Rol de Víctima
+    #?-Sexo Víctima
     df_filtrado = df_homicidios
 
-    # Elementos para la primera fila
     with col1:
-        #creación de variables
-        moto_homicidio = 89
-        moto_promedio = 91
-        # Título
+        #moto_homicidio
+        fecha_mas_reciente = df_filtrado['FECHA'].max()
+        fecha_hace_6_meses = fecha_mas_reciente - pd.DateOffset(months=6)
+        df_ultimos_6_meses = df_filtrado[(df_filtrado['FECHA'] >= fecha_hace_6_meses) & (df_filtrado['VICTIMA'] == 'MOTO')]
+        moto_homicidio = df_ultimos_6_meses['N_VICTIMAS'].sum()
+
+        # moto_promedio
+        fecha_mas_reciente = df_filtrado[df_filtrado['VICTIMA'] == 'MOTO']['FECHA'].max()
+        homicidios_por_semestre = []
+        fecha_inicio = fecha_mas_reciente
+        while fecha_inicio >= df_filtrado['FECHA'].min():
+            fecha_fin = fecha_inicio - pd.DateOffset(months=6)
+            df_periodo = df_filtrado[(df_filtrado['FECHA'] >= fecha_fin) & (df_filtrado['FECHA'] < fecha_inicio) & (df_filtrado['VICTIMA'] == 'MOTO')]
+            homicidios_por_semestre.append(df_periodo['N_VICTIMAS'].sum())
+            fecha_inicio = fecha_fin
+        moto_promedio = (sum(homicidios_por_semestre) / len(homicidios_por_semestre)).round(2)
+
         st.markdown("<h4 style='text-align:center;'>Homicidios en Motocicletas</h4>", unsafe_allow_html=True)
-        
-        # Información
-        st.markdown(f"<h5 style='text-align:center;'>Este Mes: {moto_homicidio}</h5>", unsafe_allow_html=True)
+        st.markdown(f"<h5 style='text-align:center;'>Este semestre: {moto_homicidio}</h5>", unsafe_allow_html=True)
         st.markdown(f"<h5 style='text-align:center;'>Promedio: {moto_promedio}</h5>", unsafe_allow_html=True)
 
-
     with col2:
-        #creación de variables
-        total_homicidio = 180
-        total_promedio = 182
-        # Título
-        st.markdown("<h4 style='text-align:center;'>Total Homicidios </h4>", unsafe_allow_html=True)
-        
-        # Información
-        st.markdown(f"<h5 style='text-align:center;'>Este Mes: {total_homicidio}</h5>", unsafe_allow_html=True)
+        # total_homicidio
+        fecha_mas_reciente = df_filtrado['FECHA'].max()
+        fecha_hace_6_meses = fecha_mas_reciente - pd.DateOffset(months=6)
+        df_ultimos_6_meses = df_filtrado[df_filtrado['FECHA'] >= fecha_hace_6_meses]
+        total_homicidio = df_ultimos_6_meses['N_VICTIMAS'].sum()
+
+        # total_promedio
+        fecha_mas_reciente = df_filtrado['FECHA'].max()
+        homicidios_por_semestre = []
+        fecha_inicio = fecha_mas_reciente
+        while fecha_inicio >= df_filtrado['FECHA'].min():
+            fecha_fin = fecha_inicio - pd.DateOffset(months=6)
+            df_periodo = df_filtrado[(df_filtrado['FECHA'] >= fecha_fin) & (df_filtrado['FECHA'] < fecha_inicio)]
+            homicidios_por_semestre.append(df_periodo['N_VICTIMAS'].sum())
+            fecha_inicio = fecha_fin
+        total_promedio = (sum(homicidios_por_semestre) / len(homicidios_por_semestre)).round(2)
+
+        st.markdown("<h4 style='text-align:center;'>Total Homicidios</h4>", unsafe_allow_html=True)
+        st.markdown(f"<h5 style='text-align:center;'>Este Semestre: {total_homicidio}</h5>", unsafe_allow_html=True)
         st.markdown(f"<h5 style='text-align:center;'>Promedio: {total_promedio}</h5>", unsafe_allow_html=True)
 
     with col3:
-        #creación de variables
-        conductor_homicidio = 120
-        conductor_promedio = 123
-        # Título
-        st.markdown("<h4 style='text-align:center;'>Homicidios Conductores</h4>", unsafe_allow_html=True)
-        
-        # Información
-        st.markdown(f"<h5 style='text-align:center;'>Este Mes: {conductor_homicidio}</h5>", unsafe_allow_html=True)
+        # conductor_homicidio
+        fecha_mas_reciente = df_filtrado['FECHA'].max()
+        fecha_hace_6_meses = fecha_mas_reciente - pd.DateOffset(months=6)
+        df_ultimos_6_meses = df_filtrado[(df_filtrado['FECHA'] >= fecha_hace_6_meses) & (df_filtrado['ROL'] == 'CONDUCTOR')]
+        conductor_homicidio = df_ultimos_6_meses['N_VICTIMAS'].sum()
+
+        # conductor_promedio
+        fecha_mas_reciente = df_filtrado['FECHA'].max()
+        homicidios_por_semestre = []
+        fecha_inicio = fecha_mas_reciente
+        while fecha_inicio >= df_filtrado['FECHA'].min():
+            fecha_fin = fecha_inicio - pd.DateOffset(months=6)
+            df_periodo = df_filtrado[(df_filtrado['FECHA'] >= fecha_fin) & (df_filtrado['FECHA'] < fecha_inicio) & (df_filtrado['ROL'] == 'CONDUCTOR')]
+            homicidios_por_semestre.append(df_periodo['N_VICTIMAS'].sum())
+            fecha_inicio = fecha_fin
+        conductor_promedio = (sum(homicidios_por_semestre) / len(homicidios_por_semestre)).round(2)
+
+        st.markdown("<h4 style='text-align:center;'>Homicidios Conductor</h4>", unsafe_allow_html=True)
+        st.markdown(f"<h5 style='text-align:center;'>Este semestre: {conductor_homicidio}</h5>", unsafe_allow_html=True)
         st.markdown(f"<h5 style='text-align:center;'>Promedio: {conductor_promedio}</h5>", unsafe_allow_html=True)
 
-    # Elementos para la segunda fila
-    with col4:
+    with col4:  #KPI2
         st.markdown("<h4 style='text-align:center;'>Diferencia fallecimiento Moto Anual</h4>", unsafe_allow_html=True)
 
-    with col5:
+    with col5:  #KPI1
         st.markdown("<h4 style='text-align:center;'>Diferencia Tasa Homicidios últimos 6 meses</h4>", unsafe_allow_html=True)
 
-    with col6:
+    with col6:  #KPI3
         st.markdown("<h4 style='text-align:center;'>Diferencia fallecimiento de conductores anual</h4>", unsafe_allow_html=True)
 
-    # Elementos para la tercera fila
     with col7:
         st.markdown("<h4 style='text-align:center;'>Distribución víctimas</h4>", unsafe_allow_html=True)
                 
@@ -103,7 +139,6 @@ def dashboard():
         heatmap.figure.axes[-1].tick_params(labelcolor='white')
         st.pyplot(plt)
 
-
     with col9:
         st.markdown("<h4 style='text-align:center;'>Distribución Rol víctimas</h4>", unsafe_allow_html=True)
 
@@ -113,11 +148,11 @@ def dashboard():
         colors = sns.color_palette('YlOrBr', len(labels))
         fig, ax = plt.subplots(figsize=(8, 6), facecolor='none')
         wedges, _, autotexts = ax.pie(sizes, colors=colors, autopct='%1.1f%%', startangle=140)
-        ax.legend(wedges, labels, loc="upper left", bbox_to_anchor=(0.9, 0.5), frameon=False, labelcolor='white', fontsize=20)
-        plt.setp(autotexts, size=20, weight="bold")  # Aumentar tamaño del texto autopct
+        ax.legend(wedges, labels, loc="center left", bbox_to_anchor=(0.9, 0.5), frameon=False, labelcolor='white', fontsize=20)
+        plt.setp(autotexts, size=20, weight="bold") 
         ax.axis('equal')
         st.pyplot(fig)
-
+        
 # Ejecutar la aplicación
 if __name__ == "__main__":
     # Definir y aplicar el tema personalizado
