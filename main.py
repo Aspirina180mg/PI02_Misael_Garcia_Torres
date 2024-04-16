@@ -7,65 +7,125 @@ import seaborn as sns
 # Lectura de los datos
 df_homicidios = pd.read_parquet("Datasets/df_homicidios.parquet")
 
-# Función para calcular KPIs
-def calcular_kpis(df_homicidios):
-    # KPI 1: Reducción en un 10% de la tasa de homicidios en siniestros viales
-    # de los últimos seis meses en CABA, en comparación con el semestre anterior.
-    homicidios_ultimo_semestre = df_homicidios[df_homicidios['FECHA'].dt.month.isin([1, 2, 3, 4, 5, 6])]
-    homicidios_anterior_semestre = df_homicidios[df_homicidios['FECHA'].dt.month.isin([7, 8, 9, 10, 11, 12])]
+def dashboard():
+    # Definir la población total
+    poblacion_total = 3120182
 
-    tasa_homicidios_ultimo_semestre = len(homicidios_ultimo_semestre) / len(homicidios_anterior_semestre) * 100
+    st.markdown("<h1 style='text-align:center;'>Homicidios en accidentes viales en CABA</h1>", unsafe_allow_html=True)
 
-    # KPI 2: Reducción en un 7% de la cantidad de accidentes mortales de motociclistas
-    # en el último año en CABA, respecto al año anterior.
-    accidentes_ultimo_anio = df_homicidios[df_homicidios['FECHA'].dt.year == df_homicidios['FECHA'].dt.year.max()]
-    accidentes_anio_anterior = df_homicidios[df_homicidios['FECHA'].dt.year == df_homicidios['FECHA'].dt.year.max() - 1]
+    # Crear la grilla de 3 filas por 3 columnas
+    col1, col2, col3 = st.columns([1, 1, 1])  # Primera fila
+    col4, col5, col6 = st.columns([1, 1, 1])  # Segunda fila
+    col7, col8, col9 = st.columns([1, 1, 1])  # Tercera fila
 
-    motociclistas_ultimo_anio = accidentes_ultimo_anio[accidentes_ultimo_anio['VICTIMA'] == 'MOTO']
-    motociclistas_anio_anterior = accidentes_anio_anterior[accidentes_anio_anterior['VICTIMA'] == 'MOTO']
+    # Filtros
+    # implementar filtros, por ahora sólo usar la totalidad de los datos
+    # hay que permitir seleccionar los datos a placer, y que los gráficos se actualicen a demanda
+    # por ahora utilziar df_filtrado, pero sin filtrar
+    df_filtrado = df_homicidios
 
-    reduccion_motociclistas = (len(motociclistas_anio_anterior) - len(motociclistas_ultimo_anio)) / len(motociclistas_anio_anterior) * 100
+    # Elementos para la primera fila
+    with col1:
+        #creación de variables
+        moto_homicidio = 89
+        moto_promedio = 91
+        # Título
+        st.markdown("<h4 style='text-align:center;'>Homicidios en Motocicletas</h4>", unsafe_allow_html=True)
+        
+        # Información
+        st.markdown(f"<h5 style='text-align:center;'>Este Mes: {moto_homicidio}</h5>", unsafe_allow_html=True)
+        st.markdown(f"<h5 style='text-align:center;'>Promedio: {moto_promedio}</h5>", unsafe_allow_html=True)
 
-    # KPI 3: Tasa de homicidios en siniestros viales por grupo de edad
-    homicidios_por_grupo_edad = df_homicidios.groupby(pd.cut(df_homicidios['EDAD'], bins=np.arange(0, 101, 10), include_lowest=True, right=False).astype(str))['ID'].count()
+
+    with col2:
+        #creación de variables
+        total_homicidio = 180
+        total_promedio = 182
+        # Título
+        st.markdown("<h4 style='text-align:center;'>Total Homicidios </h4>", unsafe_allow_html=True)
+        
+        # Información
+        st.markdown(f"<h5 style='text-align:center;'>Este Mes: {total_homicidio}</h5>", unsafe_allow_html=True)
+        st.markdown(f"<h5 style='text-align:center;'>Promedio: {total_promedio}</h5>", unsafe_allow_html=True)
+
+    with col3:
+        #creación de variables
+        conductor_homicidio = 120
+        conductor_promedio = 123
+        # Título
+        st.markdown("<h4 style='text-align:center;'>Homicidios Conductores</h4>", unsafe_allow_html=True)
+        
+        # Información
+        st.markdown(f"<h5 style='text-align:center;'>Este Mes: {conductor_homicidio}</h5>", unsafe_allow_html=True)
+        st.markdown(f"<h5 style='text-align:center;'>Promedio: {conductor_promedio}</h5>", unsafe_allow_html=True)
+
+    # Elementos para la segunda fila
+    with col4:
+        st.markdown("<h4 style='text-align:center;'>Diferencia fallecimiento Moto Anual</h4>", unsafe_allow_html=True)
+
+    with col5:
+        st.markdown("<h4 style='text-align:center;'>Diferencia Tasa Homicidios últimos 6 meses</h4>", unsafe_allow_html=True)
+
+    with col6:
+        st.markdown("<h4 style='text-align:center;'>Diferencia fallecimiento de conductores anual</h4>", unsafe_allow_html=True)
+
+    # Elementos para la tercera fila
+    with col7:
+        st.markdown("<h4 style='text-align:center;'>Distribución víctimas</h4>", unsafe_allow_html=True)
+                
+        victima_counts = df_filtrado['VICTIMA'].value_counts()
+        top_4_victimas = victima_counts.nlargest(4)
+        otros_victimas = victima_counts[~victima_counts.index.isin(top_4_victimas.index)].sum()
+        labels = list(top_4_victimas.index) + ['Otros']
+        sizes = list(top_4_victimas.values) + [otros_victimas]
+        colors = sns.color_palette('YlOrBr', len(labels))
+        fig, ax = plt.subplots(figsize=(8, 6), facecolor='none')  # Fondo transparente
+        wedges, _, autotexts = ax.pie(sizes, colors=colors, autopct='%1.1f%%', startangle=140)
+        ax.legend(wedges, labels, loc="center left", bbox_to_anchor=(1, 0, 0.5, 1), frameon=False, labelcolor='white', fontsize=20)
+        plt.setp(autotexts, size=20, weight="bold")
+        ax.axis('equal')
+        st.pyplot(fig)
+
+    with col8:
+        st.markdown("<h4 style='text-align:center;'>Relación Acusado-Víctima</h4>", unsafe_allow_html=True)
+
+        top_acusado = df_filtrado['ACUSADO'].value_counts().nlargest(3).index.tolist()
+        top_victima = df_filtrado['VICTIMA'].value_counts().nlargest(3).index.tolist()
+        df_filtered = df_filtrado[df_filtrado['ACUSADO'].isin(top_acusado) & df_filtrado['VICTIMA'].isin(top_victima)]
+        contingency_table = pd.crosstab(df_filtered['VICTIMA'], df_filtered['ACUSADO'])
+        sns.set_palette('YlOrBr')
+        plt.figure(figsize=(10, 8), facecolor='none')
+        heatmap = sns.heatmap(contingency_table, annot=True, fmt='d', cmap='YlOrBr', linewidths=.5, annot_kws={"size": 20})
+        plt.xticks(color='white', fontsize=15)
+        plt.yticks(color='white', fontsize=15)
+        plt.xlabel('ACUSADO', fontsize=20, color='white')
+        plt.ylabel('VICTIMA', fontsize=20, color='white')
+        heatmap.figure.axes[-1].tick_params(labelcolor='white')
+        st.pyplot(plt)
 
 
-    return tasa_homicidios_ultimo_semestre, reduccion_motociclistas, homicidios_por_grupo_edad
+    with col9:
+        st.markdown("<h4 style='text-align:center;'>Distribución Rol víctimas</h4>", unsafe_allow_html=True)
 
-# Función para mostrar el dashboard
-def mostrar_dashboard():
-    # Título
-    st.title("Dashboard de Homicidios en Siniestros Viales")
-
-    # Mostrar KPIs
-    st.header("KPIs")
-    kpi1, kpi2, kpi3 = calcular_kpis(df_homicidios)
-    st.write(f"KPI 1: Reducción del 10% en la tasa de homicidios en siniestros viales en los últimos seis meses: {kpi1:.2f}%")
-    st.write(f"KPI 2: Reducción del 7% en la cantidad de accidentes mortales de motociclistas en el último año: {kpi2:.2f}%")
-    st.write("KPI 3: Tasa de homicidios en siniestros viales por grupo de edad")
-    st.bar_chart(kpi3)
-
-    # Mostrar datos
-    st.header("Datos de Homicidios")
-    st.write(df_homicidios)
+        victima_counts = df_filtrado['ROL'].value_counts()
+        labels = victima_counts.index.tolist()
+        sizes = victima_counts.values.tolist()
+        colors = sns.color_palette('YlOrBr', len(labels))
+        fig, ax = plt.subplots(figsize=(8, 6), facecolor='none')
+        wedges, _, autotexts = ax.pie(sizes, colors=colors, autopct='%1.1f%%', startangle=140)
+        ax.legend(wedges, labels, loc="upper left", bbox_to_anchor=(0.9, 0.5), frameon=False, labelcolor='white', fontsize=20)
+        plt.setp(autotexts, size=20, weight="bold")  # Aumentar tamaño del texto autopct
+        ax.axis('equal')
+        st.pyplot(fig)
 
 # Ejecutar la aplicación
 if __name__ == "__main__":
-    mostrar_dashboard()
+    # Definir y aplicar el tema personalizado
+    custom_theme = """
+    [theme]
+    base="dark"
+    primaryColor="#ffff00"
+    """
+    st.markdown(f'<style>{custom_theme}</style>', unsafe_allow_html=True)
 
-
-
-# Dashboard:
-# Crea un dashboard funcional y coherente con el storytelling.
-# Incluye filtros interactivos para explorar detalladamente los datos.
-# Diseña el dashboard de manera que facilite la interpretación de la información.
-# Utiliza una presentación clara de los datos y elige gráficos adecuados según
-# las variables a visualizar.
-
-# KPIs:
-# Grafica y mide los 2 KPIs propuestos:
-# Reducción en un 10% de la tasa de homicidios en siniestros viales de
-# los últimos seis meses, en CABA, en comparación con el semestre anterior.
-# Reducción en un 7% de la cantidad de accidentes mortales de motociclistas
-# en el último año, en CABA, respecto al año anterior.
-# Propón, mide y grafica un tercer KPI relevante para la temática.
+    dashboard()
