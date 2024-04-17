@@ -1,12 +1,8 @@
-# Proyecto de Ciencia de Datos para Steam
+# Proyecto de Data Analytics para Observatorio de Movilidad y Seguridad Vial (OMSV)
 
-Este proyecto de ciencia de datos se centra en el análisis de datos relacionados con Steam, la plataforma de distribución de videojuegos de Valve Corporation. El objetivo principal es realizar análisis y extracciones de información relevante para la recomendación de juegos al usuario, entregando más valor a su experiencia en la plataforma, los resultados de estos análisis serán cargados en una API
+Este proyecto de análisis de datos se centra en la creación de un dashboard y en la toma de decisiones sobre datos de homicidios en siniestros viales registrados en la Ciudad Autónoma de Buenos Aires (CABA) durante el periodo de 2016 a 2021, el objetivo principal es el de disminuir la cantidad de fictimas fatales.
+Los resultados de éste análisis serán cargados en un Dashboard interactivo en un enlace público.
 
-## Video de demostración
-[![Watch the video](https://img.youtube.com/vi/wPvSoBxv7Og/maxresdefault.jpg)](https://www.youtube.com/watch?v=wPvSoBxv7Og)
-
-https://youtu.be/wPvSoBxv7Og
- 
 # Tabla de contenidos
 1. [Cómo Ejecutar el Proyecto](#ejecutar)
 2. [Guía de uso rápido](#usorapido)
@@ -29,30 +25,21 @@ https://youtu.be/wPvSoBxv7Og
 
 Para ejecutar el proyecto localmente, sigue estos pasos:
 
-1. Clona el repositorio desde [GitHub](https://github.com/Aspirina180mg/PI01_Misael_Garcia_Torres).
-2. Instala las dependencias del proyecto utilizando el archivo `requirements_jupyter.txt`, abriendo el terminal en la carpeta raíz del proyecto y corriendo el comando `> pip install -r requirements_jupyter.txt` en la consola
+1. Clona el repositorio desde [GitHub](https://github.com/Aspirina180mg/PI02_Misael_Garcia_Torres).
+2. Instala las dependencias del proyecto utilizando el archivo `requirements.txt`, abriendo el terminal en la carpeta raíz del proyecto y corriendo el comando `> pip install -r requirements.txt` en la consola
     1. Nota que el proyecto fué creado con Python 3.11.6, se recomienda usar la misma versión.
-3. Ejecuta el archivo `PI01_Misael_Garcia_Torres.ipynb` en un entorno de Jupyter Notebook o Google Colab, éste llamara los archivos csv almacenados en `PI MLOps - STEAM.zip`, si deseas modificar los archivos se recomienda mantener la estructura original para simplificar la operación.
-4. Explora y ejecuta las celdas según sea necesario para realizar análisis y obtener resultados.
-    1. Nota que puedes ejecutar las distintas celdas en el orden que desees y las veces que desees.
-    2. El proyecto fue creado usando Google Colab y la limitación principal era que sólo se contaba con 12.7 GB de memoria RAM.
-5. Prueba la api, utilizando el comando `uvicorn main:app -reload` en la carpeta raíz del proyecto, una vez realizado esto podrás ingresar al localhost para ver la documentación sobre su funcionamiento y probar algunas búsquedas.
-    1. Para probar la api debes ingresar a tu [localhost (127.0.0.1:8000/docs)](127.0.0.1:8000/docs)
-6. Hacer deploy en Render, si posees o te creas una cuenta en [Render](https://render.com/), puedes hacer tu propio deploy de la API.Los ajustes usados para hacer el deploy son los siguientes
-    1. Repositorio de github, debes ingresar el enlace del clon que hiciste al repositorio original.
-    2. Branch del repositori, si no haz modificado esto en el repositorio, será main.
-    3. Directorio Raíz, debes dejarlo en blanco, ya que es el mismo que el propio directorio raíz del repositorio.
-    4. Comando de armado (Build Command), debes escribir `pip install -r requirements.txt` para que lea el archivo requirements.txt del repositorio enlacado en el punto 5.1.
-    5. Comando previo al deploy, no hay, déjalo en blanco
-    6. Comando de inicio, usarás `uvicorn main:app --host 0.0.0.0 --port $PORT` para que el puerto sea dinámico.
-
+3. Ejecuta el archivo `ETL.ipynb` en un entorno de Jupyter Notebook o Google Colab, éste llamara los archivos xlsx almacenados en la carpeta `Datasets`, realizará limpieza de datos y los exportará en la misma carpeta con formato .parquet, si deseas modificar los archivos se recomienda mantener la estructura original para simplificar la operación.
+4. Ejecuta el archivo `EDA.ipynb` en un entorno de Jupyter Notebook o Google Colab, éste llamara los archivos parquet almacenados en la carpeta `Datasets` y realizará gráficos que entregan información significativa de la exploración de datos, se recomienda obviar las conclusiones descritas en el docmento si se va a modificar los datos en el paso anterior.
+5. Prueba el dashboard, ejecutando el archivo main.py, si ejecuta de manera correcta, entregará el mensaje de correr el comando `streamlit run z:/PI02_Misael_Garcia_Torres/main.py [ARGUMENTS]` en la carpeta raíz del proyecto, una vez realizado esto podrás ingresar al localhost para visualizar el dashboard interactivo.
+    1. Para poder visualizar el dashboard puedes debes seguir los enlaces que te mostrará la terminal, normalmente utilizando el [localhost (127.0.0.1:8501)](127.0.0.1:8501)
+6. Hacer deploy en streamlit, si posees o te creas una cuenta en [Streamlit](https://streamlit.io/), puedes hacer tu propio deploy de la API
 
 <a name="usorapido"></a>
 
 ## Guía de uso rápido
 
-Se recomienda sólo agregar información a los archivos originales del proyecto, puedes cargar tus propios archivos csv con bases de datos similares a las encontradas en este repositorio, pero la carga a los dataframes del proyecto los tendrás que hacer maunualmente.
-Una vez hayas finalizado la ejecución del archivo `PI01_Misael_Garcia_Torres.ipynb` podrás cargar la api de manera local, o hacer un deploy en Render.
+Se recomienda sólo agregar información a los archivos originales del proyecto, puedes cargar tus propios archivos xlsx con bases de datos similares a las encontradas en este repositorio, pero la carga a los dataframes del proyecto los tendrás que hacer maunualmente.
+Una vez hayas finalizado la ejecución del archivo `ETL.ipynb` podrás cargar el dashboard (main.py) de manera local, o hacer un deploy en Streamlit.
 
 <a name="dataengineer"></a>
 
