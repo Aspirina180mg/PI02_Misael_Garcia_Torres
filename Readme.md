@@ -6,18 +6,22 @@ Los resultados de éste análisis serán cargados en un Dashboard interactivo en
 # Tabla de contenidos
 1. [Cómo Ejecutar el Proyecto](#ejecutar)
 2. [Guía de uso rápido](#usorapido)
-3.  [Data Engineering](#dataengineer)
+3.  [Data Analytics](#dataengineer)
     1. [Repositorio y Conjuntos de Datos](#datos)
     2. [Preprocesamiento de Datos](#preprocesamiento)
     3. [Descripción del Proyecto](#descripcion)
-4. [Funciones de la API](#funciones)
-5. [Deployment y la API](#deploy)
-6. [Archivos Generados](#archivos)
-7. [Contribuciones y Colaboraciones](#contribuciones)
-8. [Links](#links)
-9. [Licencia](#licencia)
-10. [Contacto](#contacto)
-11. [Menciones y agradecimientos](#menciones)
+
+4. [Análisis de datos](#analisis)
+5. [KPIs](#kpis)
+
+6. [Pánel de datos o Dashboard](#dashboard)
+
+5. [Archivos Generados](#archivos)
+6. [Contribuciones y Colaboraciones](#contribuciones)
+7. [Links](#links)
+8. [Licencia](#licencia)
+9. [Contacto](#contacto)
+10. [Menciones y agradecimientos](#menciones)
 ------------------------------------------------------------------------------------------------------------------------------------
 <a name="ejecutar"></a>
 
@@ -43,30 +47,24 @@ Una vez hayas finalizado la ejecución del archivo `ETL.ipynb` podrás cargar el
 
 <a name="dataengineer"></a>
 
-## Data Engineering
+## Data Analytics
 
 <a name="datos"></a>
 
 ### Repositorio y Conjuntos de Datos
 
-- El repositorio original del proyecto se encuentra disponible en [GitHub](https://github.com/soyHenry/PI_ML_OPS/tree/PT?tab=readme-ov-file).
-- Los conjuntos de datos utilizados se encuentran disponibles en [Google Drive](https://drive.google.com/drive/folders/1HqBG2-sUkz_R3h1dZU5F2uAzpRn7BSpj).
+- El repositorio original del proyecto se encuentra disponible en [GitHub](https://github.com/soyHenry/PI_DA/tree/Full_Time).
+- Los conjuntos de datos utilizados se encuentran disponibles en el portal oficial de [Buenos Aires Data (BA Data)](https://data.buenosaires.gob.ar/dataset/victimas-siniestros-viales).
 
 <a name="preprocesamiento"></a>
 
-### Preprocesamiento y análisis de Datos
+### Preprocesamiento de datos
 
 - Se realiza la carga y limpieza de los conjuntos de datos utilizando Python y las siguientes librerías:
-  - ast
-  - nltk
-  - pandas
   - numpy
-  - matplotlib
-  - wordcloud
-  - sklearn
-  - seaborn
+  - pandas
   
-  puedes revisar más en detalle los pasos realizados dentro del archivo [`PI01_Misael_Garcia_Torres.ipynb`](https://colab.research.google.com/drive/1fNHTxOLO9_OX4gVw3RFdsqvvzBtRrjLS#scrollTo=WKs6ccEbpP9J)
+  puedes revisar más en detalle los pasos realizados dentro del archivo [`ETL.ipynb`](https://github.com/Aspirina180mg/PI02_Misael_Garcia_Torres/blob/main/ETL.ipynb)
 
 <a name="descripcion"></a>
 
@@ -74,57 +72,102 @@ Una vez hayas finalizado la ejecución del archivo `ETL.ipynb` podrás cargar el
 
 El proyecto se divide en las siguientes secciones principales:
 
-1. **Exploración de Datos:** Análisis inicial de los conjuntos de datos para comprender su estructura y características.
-2. **Limpieza de Datos:** Proceso de limpieza y preprocesamiento de los datos para eliminar valores nulos, duplicados y realizar correcciones.
-3. **Transformación de Datos:** Conversión de tipos de datos, extracción de información relevante y preparación de los datos para su análisis.
-4. **Análisis de Sentimientos:** Utilización de análisis de sentimientos para evaluar las opiniones de los usuarios en las reseñas de juegos, se utiliza la librería nltk y el vader_lexicon
-5. **Generación de Reportes:** Creación de visualizaciones y reportes estadísticos para identificar patrones y tendencias en los datos.
+1. **ETL:** Exploración, transformación y carga de los conjuntos de datos, realizando los primeros análisis y preparándolos para ser procesados en mayor profundidad.
+2. **EDA:** Análisis exploratorio, proceso para comprender los datos y sacar conclusiones de los mismos, en este caso, para decidir qué información mostrar en el dashboard.
+3. **Creación de Dashboard:** Se genera un pánel con la información que se estima necesaria para poder comprender los datos de manera rápida, éste no sólo muestra gráficos, sino que es interactivo y permite filtrar la información de manera dinámica.
 
-<a name="funciones"></a>
+<a name="analisis"></a>
 
-## Funciones de la API
+## Análisis de datos
 
-El proyecto también incluye la implementación de una API para proporcionar acceso a datos procesados y funcionalidades específicas. Esta fue desarrollada en el archivo `main.py`.
-Las principales funciones de la API incluyen:
+Los datos se cargaron en el dataframe df_homicidios, el cual cuenta con 18 columnas, de las cuales se determinó que las columnas principales son 6, HORA, EDAD, ACUSADO, VICTIMA, ROL y SEXO, ésto fue determinado analisando los gráficos de los datos por separado, aún pese a determinarse como datos principales, no se descartan las demás columnas del dataframe.
 
-1. **PlayTimeGenre():** Devuelve el año con más horas jugadas para un género específico.
-2. **UserForGenre():** Devuelve el usuario con más horas jugadas para un género específicoy el detalle de la acumulación de horas anual para este usuario.
-3. **UsersRecommend():** Devuelve un top 3 con los juegos más recomendados por usuarios para un año dado.
-4. **UsersNotRecommend():** Devuelve un top 3 con los juegos menos recomendados por usuarios para un año dado.
-5. **SentimentAnalysis():** devuelve la cantidad de comentarios positivos, neutrales y negativos para un año dado.
-6. **recomendacion_juegos():** Devuelve un top 5 de los juegos similares al juego dado.
-7. **recomendacion_usuario():** Devuelve un top 5 de los juegos recomendados para el usuario dado.
+Se realizaron análisis monovariados y bivariados, en búsqueda de conclusiones que denotaran una imágen más clara sobre los motivos de la alta fatalidad en accidentes víales, o sobre los focos de acción para evitarlos.
 
-para más información se puede consultar la documentación de la api en :
-[https://pi01-misael-garcia-torres.onrender.com/docs](https://pi01-misael-garcia-torres.onrender.com/docs)
+*Análisis Monovariados*
 
-<a name="deploy"></a>
+*   HORA
 
-## Deployment
-La API puede ser probada en local utilizando uvicorn con el siguiente comando dentro de la carpeta raíz del proyecto:
+Se identificó un foco de accidentes en el horario de entre las 6 y las 11 am, éste foco es leve y no es algo significativo.
+Se puede determinar que hay fatalidades durante todas las horas del día, contradiciendo la hipótesis de que habría más accidentes fatales durante la noche.
 
-```bash
-uvicorn main:app --reload
-```
+*   EDAD
 
-la API está deployada en Render, cada modificación hecha en el archivo `main.py` se verá de forma automática en uvicorn, pero debe ser actualizada manualmente en el Deploy de Render.
+Se identifica un fuerte foco en las edades entre 25 y 35 años, lo que podría indicar que los conductores jóvenes sufren más accidentes fatales en la vía, esto puede deberse a sobre-confianza o a la inexperiencia al volante.
 
-<a name="archivos"></a>
+*   ACUSADO
 
-## Archivos Generados
+Se observa que la mayor cantidad de accidentes son en Autos, lo que se justifica considerando que los vehículos personales son los que más circulan en la ciudad.
 
-El proyecto genera un archivo para cada función de la API, con datos preprocesados y resultados de análisis para su consulta.
+*   VICTIMA
 
-- `df_PlayTimeGenre`: tiene la estructura {genero,año}
-- `df_UserForGenre`: tiene la estructura {genero,user_id,año,horas_jugadas}
-- `df_UsersRecommend`: tiene la estructura {año,puesto,juego}
-- `df_UsersNotRecommend`: tiene la estructura {año,puesto,juego}
-- `df_SentimentAnalysis`: tiene la estructura {año,categoria,cantidad}
-- `df_recomendacion_juegos`: tiene la estructura {id_juego,nombre_juego, puesto, juego}
-- `df_recomendacion_usuario`: tiene la estructura {id_usuario, puesto, juego}
+El tipo de transporte con más Víctimas fatales son las motocicletas, observación lógica, considerando que frente a los autos, una moto no ofrece protección para su conductor o su pasajero.
 
-*Nota* los resultados de df_recomendacion_juegos y df_recomendacion_usuario fueron creados aplicando el modelo de similitud del coseno.
-*Nota 2* durante el proceso estándar se desempaquetan los archivos `Diccionario de Datos STEAM.xlsx`, `steam_games.son.gz`, `user_reviews.json.gz` y `user_items.json.gz` en la carpeta `PI MLOps - STEAM`.
+*   ROL
+
+El Rol más común de las víctimas es el de conductor, llamando la atención que esta medida sobrepasa a los peatones, quienes no tienen la protección del vehículo ante accidentes.
+
+*   SEXO
+
+Al comparar Hombres y Mujeres, sus estadísticas se contrastan fuertemente, los hombres fallecen 3 veces más que las mujeres.
+
+*Análisis Bivariados*
+
+*   Relación entre EDAD y SEXO
+
+Se observa que al comparar los fallecimientos de hombres vs mujeres, al ordenarlos por edad, los hombres fallecen a edades más jóvenes que las mujeres.
+También se observa que hay una forma de campana en los datos, significando que hay una distribución normal.
+
+*   Relación entre ACUSADO y VÍCTIMA
+
+Llama la atención que por sobre todos los otros Acusados, los vehículos de pasajeros, con víctimas de peatones, son la combinación con mayor frecuencia, incluso por sobre los accidentes en Auto, podría deberse a la forma de conducir de los transportes públicos, claramente un dato en el que se puede profundizar con más información.
+
+*   Relación entre SEXO y ROL
+
+Lo más llamativo de toda la investigación, el análisis acusa que los conductores hombres fallecen 15 veces más que las conductoras mujeres.
+
+
+*Conclusión*
+Que los hombres fallezcan 15 veces más que las mujeres al estar conduciendo indica claramente que la diferencia de edad en los fallecimientos entre ambos sexos no es una coincidencia, se puede concluir que la edad del conductor juega un rol primordial sobre la forma de conducción y el cuidado al volante, los hombres parecen tener tendencias más temerarias, lo que lleva a más accidentes, también se puede complementar con las observaciones anteriores, si se considera que es más común ver hombres, conduciendo vehículos de transporte público.
+
+<a name="kpis"></a>
+
+## KPIs
+
+Se determinaron 3 KPIs que supervisar que ayudarán a disminuir la cantidad de fallecimientos totales.
+
+1. Tasa de homicidios
+
+La tasa de homicidios tiene relación con la cantidad de muertes por cada 100.000 habitantes, es el KPI principal, ya que si disminuye, indica que la población está teniendo un mayor cuidado al volante.
+
+2. Cantidad de Fallecimientos en Moto
+
+Como el transporte con más Fallecidos, se justifica la monitorización de este KPI, si disminuye significa que se está respetando tanto a los conductores de motocicletas, como las leyes de tránsito, ya que las motos son más propensas a accidentes por no respetar la señalética de tránsito, por ejemplo.
+
+3. Conductores Involucrados en accidentes fatales
+
+Este KPI se deriva en parte del anterior, puede indicar una falta de uso de cinturón de seguridad, así como poco cuidado en la conducción, si disminuye tendría un gran impacto en la cantidad total de accidentes fatales.
+
+<a name="dashboard"></a>
+
+## Pánel de datos o Dashboard
+
+El dashboard ofrece una manera rápida para hacer seguimiento a los KPIs, se seleccionó, además, indicadores relacionados que pueden ayudar a la comprensión de los mismos, y apoyar en la toma de desiciones.
+
+El dashboard cuenta con los siguientes indicadores:
+*   Homicidios en motocicletas el último año y en promedio
+*   Homicidios totales este semestre y en promedio
+*   Homicidios de Conductores este semestre y en promedio
+*   Diferencia de homicidios en moto este año vs el anterior
+*   Diferencia en Tasa de homicidios este semestre vs el anterior
+*   Diferencia homicidios de conductores este año vs el anterior
+*   Distribución de víctimas
+*   Relación Acusado-víctima
+*   Distribución de Rol de las víctimas
+
+![Dashboard](/SRC/image.png)
+
+El dashboard cuenta con filtros, los que actualizan en tiempo real los gráficos que se púeden observar, es posible que algunas combinaciones de datos den errores ya que los gráficos necesitan entre 1 y 2 años de datos para realizar los cálculos, un error común es la división por cero, afortunadamente el dashboard no se crashea, sino que sólo entrega un aviso de error, si se corrigen los filtros, todo vuelve a funcionar normal, se recomienda que ante cualquier error en la graficación, se reinicien todos los filtros.
 
 <a name="contribuciones"></a>
 
@@ -136,9 +179,9 @@ Se aceptan contribuciones al proyecto, puede enviar una solicitud de extracción
 
 ## Links
 
-Proyecto Original: https://github.com/soyHenry/PI_ML_OPS/tree/PT?tab=readme-ov-file
-Repositorio: https://github.com/Aspirina180mg/PI01_Misael_Garcia_Torres
-Seguimiento de problemas: https://github.com/Aspirina180mg/PI01_Misael_Garcia_Torres/issues
+Proyecto Original: https://github.com/soyHenry/PI_DA/tree/Full_Time?tab=readme-ov-file
+Repositorio: https://github.com/Aspirina180mg/PI02_Misael_Garcia_Torres/blob/main/ETL.ipynb
+Seguimiento de problemas: https://github.com/Aspirina180mg/PI02_Misael_Garcia_Torres/issues
   - En caso de bugs sensibles como vulnerabilidades de seguridad, por favor
     contacte directamente al correo misagtor@gmail.com en lugar de abrir un 
     problema (issue), esto para agilizar el proceso de resolución.
@@ -164,4 +207,5 @@ Para obtener más información o realizar preguntas sobre el proyecto, puedes po
 
 ## Menciones y agradecimientos
 
-Para la realización de este proyecto se utilizaron los conocimientos adquiridos en el Bootcamp de Data Science del Equipo de "[Henry](https://web.soyhenry.com/about-us)", agradezco también a mis TAs Rafael Alvarez y Roberto Schaefer, quienes me acompañaron durante todo el proceso, son unos cracks, el agradecimiento final va a mi señora Kimberly Moya y a mi hijo Javier García, por apoyarme y aguantarme durante la realziación de este y todos mis proyectos.
+Para la realización de este proyecto se utilizaron los conocimientos adquiridos en el Bootcamp de Data Science del Equipo de "[Henry](https://web.soyhenry.com/about-us)", agradezco también a mis TAs Rafael Alvarez y Roberto Schaefer, quienes me acompañaron durante todo el proceso, son unos cracks,
+a javier Bengolea, mi compañero TA, de pocas palabras, pero infinita sabiduría, el agradecimiento final va a mi señora, Kimberly Moya, y a mi hijo Javier García, por apoyarme y aguantarme durante la realziación de este y todos mis proyectos.
