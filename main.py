@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -28,7 +27,6 @@ def dashboard():
     df_filtrado["FECHA"] = pd.to_datetime(df_filtrado["FECHA"])
     df_filtrado["AÑO"] = df_filtrado["FECHA"].dt.year
     df_filtrado["MES"] = df_filtrado["FECHA"].dt.month
-    
 
     anos_unicos = df_filtrado["AÑO"].unique()
     meses_unicos = df_filtrado["MES"].unique()
@@ -45,18 +43,34 @@ def dashboard():
 
     # Widget para seleccionar los variables y valores de filtro
     st.sidebar.header("Filtros")
-    ano_min_filtro = st.sidebar.selectbox("Año Mínimo del Accidente", options=[None] + list(anos_unicos))
-    ano_max_filtro = st.sidebar.selectbox("Año Máximo del Accidente", options=[None] + list(anos_unicos))
-    mes_min_filtro = st.sidebar.selectbox("Mes Mínimo del Accidente", options=[None] + list(meses_unicos))
-    mes_max_filtro = st.sidebar.selectbox("Mes Máximo del Accidente", options=[None] + list(meses_unicos))
-    edad_min_filtro = st.sidebar.selectbox("Edad Mínima de la Víctima", options=[None] + edades_unicas)
-    edad_max_filtro = st.sidebar.selectbox("Edad Máxima de la Víctima", options=[None] + edades_unicas)
+    ano_min_filtro = st.sidebar.selectbox(
+        "Año Mínimo del Accidente", options=[None] + list(anos_unicos)
+    )
+    ano_max_filtro = st.sidebar.selectbox(
+        "Año Máximo del Accidente", options=[None] + list(anos_unicos)
+    )
+    mes_min_filtro = st.sidebar.selectbox(
+        "Mes Mínimo del Accidente", options=[None] + list(meses_unicos)
+    )
+    mes_max_filtro = st.sidebar.selectbox(
+        "Mes Máximo del Accidente", options=[None] + list(meses_unicos)
+    )
+    edad_min_filtro = st.sidebar.selectbox(
+        "Edad Mínima de la Víctima", options=[None] + edades_unicas
+    )
+    edad_max_filtro = st.sidebar.selectbox(
+        "Edad Máxima de la Víctima", options=[None] + edades_unicas
+    )
 
     # Eliminar valores inexistentes de los filtros
     acusados_disponibles = df_filtrado["ACUSADO"].unique()
     if "MOTO" not in acusados_disponibles:
-        acusados_disponibles = [acusado for acusado in acusados_disponibles if acusado != "MOTO"]
-    acusado_filtro = st.sidebar.multiselect("Acusado del Homicidio", options=acusados_disponibles)
+        acusados_disponibles = [
+            acusado for acusado in acusados_disponibles if acusado != "MOTO"
+        ]
+    acusado_filtro = st.sidebar.multiselect(
+        "Acusado del Homicidio", options=acusados_disponibles
+    )
 
     victimas_disponibles = df_filtrado["VICTIMA"].unique()
     victima_filtro = st.sidebar.multiselect("Víctima", options=victimas_disponibles)
