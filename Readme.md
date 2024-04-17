@@ -148,6 +148,8 @@ Este KPI se deriva en parte del anterior, puede indicar una falta de uso de cint
 
 ## Pánel de datos o Dashboard
 
+Enlade a Deploy: https://pi02misaelgarciatorres.streamlit.app/
+
 El dashboard ofrece una manera rápida para hacer seguimiento a los KPIs, se seleccionó, además, indicadores relacionados que pueden ayudar a la comprensión de los mismos, y apoyar en la toma de desiciones.
 
 El dashboard cuenta con los siguientes indicadores:
