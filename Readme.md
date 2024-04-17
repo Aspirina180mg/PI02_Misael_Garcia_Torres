@@ -10,18 +10,14 @@ Los resultados de éste análisis serán cargados en un Dashboard interactivo en
     1. [Repositorio y Conjuntos de Datos](#datos)
     2. [Preprocesamiento de Datos](#preprocesamiento)
     3. [Descripción del Proyecto](#descripcion)
-
 4. [Análisis de datos](#analisis)
 5. [KPIs](#kpis)
-
-6. [Pánel de datos o Dashboard](#dashboard)
-
-5. [Archivos Generados](#archivos)
-6. [Contribuciones y Colaboraciones](#contribuciones)
-7. [Links](#links)
-8. [Licencia](#licencia)
-9. [Contacto](#contacto)
-10. [Menciones y agradecimientos](#menciones)
+6. [Pánel de control o Dashboard](#dashboard)
+7. [Contribuciones y Colaboraciones](#contribuciones)
+8. [Links](#links)
+9. [Licencia](#licencia)
+10. [Contacto](#contacto)
+11. [Menciones y agradecimientos](#menciones)
 ------------------------------------------------------------------------------------------------------------------------------------
 <a name="ejecutar"></a>
 
@@ -84,7 +80,7 @@ Los datos se cargaron en el dataframe df_homicidios, el cual cuenta con 18 colum
 
 Se realizaron análisis monovariados y bivariados, en búsqueda de conclusiones que denotaran una imágen más clara sobre los motivos de la alta fatalidad en accidentes víales, o sobre los focos de acción para evitarlos.
 
-*Análisis Monovariados*
+### **Análisis Monovariados**
 
 *   HORA
 
@@ -111,7 +107,7 @@ El Rol más común de las víctimas es el de conductor, llamando la atención qu
 
 Al comparar Hombres y Mujeres, sus estadísticas se contrastan fuertemente, los hombres fallecen 3 veces más que las mujeres.
 
-*Análisis Bivariados*
+### **Análisis Bivariados**
 
 *   Relación entre EDAD y SEXO
 
@@ -180,7 +176,10 @@ Se aceptan contribuciones al proyecto, puede enviar una solicitud de extracción
 ## Links
 
 Proyecto Original: https://github.com/soyHenry/PI_DA/tree/Full_Time?tab=readme-ov-file
+
 Repositorio: https://github.com/Aspirina180mg/PI02_Misael_Garcia_Torres/blob/main/ETL.ipynb
+
+
 Seguimiento de problemas: https://github.com/Aspirina180mg/PI02_Misael_Garcia_Torres/issues
   - En caso de bugs sensibles como vulnerabilidades de seguridad, por favor
     contacte directamente al correo misagtor@gmail.com en lugar de abrir un 
