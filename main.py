@@ -5,6 +5,17 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import math
 
+# Utilidades para evitar división por cero y listas vacías
+def safe_div(num, den, default=np.nan):
+    try:
+        return num / den if den not in (0, 0.0, None) else default
+    except Exception:
+        return default
+
+def safe_pct(num, den, default=np.nan):
+    v = safe_div(num, den, default)
+    return v * 100 if not (pd.isna(v)) else default
+    
 # Lectura de los datos
 @st.cache_data
 def carga_datos():
@@ -182,8 +193,14 @@ def dashboard():
             width = p.get_width()
             height = p.get_height()
             x, y = p.get_xy() 
-            porcentaje = height / len(df_filtered) * 100
-            if porcentaje > 0: plt.annotate(f'{porcentaje:.2f}%', (x + width/2, y + height*1.02), ha='center')
+            # Antes:
+            # porcentaje = height / len(df_filtered) * 100
+            # if porcentaje > 0: plt.annotate(...)
+            # Después:
+            total_barras = len(df_filtered)
+            porcentaje = safe_pct(height, total_barras)
+            if not pd.isna(porcentaje) and porcentaje > 0:
+                plt.annotate(f'{porcentaje:.2f}%', (x + width/2, y + height*1.02), ha='center')
         plt.xlabel('Tipo de Acusado')
         plt.ylabel('')
         plt.title('Gráfico de relación entre Acusado y Víctima')
@@ -207,7 +224,10 @@ def dashboard():
             width = p.get_width()
             height = p.get_height()
             x, y = p.get_xy() 
-            porcentaje = height / len(df_filtrado) * 100
+            # Antes:
+            # porcentaje = height / len(df_filtrado) * 100
+            # Después:
+            porcentaje = safe_pct(height, len(df_filtrado))
             if porcentaje > 0: plt.annotate(f'{porcentaje:.2f}%', (x + width/2, y + height*1.02), ha='center')
         plt.gca().set_yticks([])
         plt.tight_layout()
@@ -287,7 +307,15 @@ def dashboard():
         total_victimas_ultimo_anio_moto = df_ultimo_anio_moto.shape[0]
         total_victimas_anio_anterior_moto = df_anio_anterior_moto.shape[0]
         objetivo = -7
-        valor = ((total_victimas_ultimo_anio_moto - total_victimas_anio_anterior_moto) / total_victimas_anio_anterior_moto * 100)
+        # Antes:
+        # valor = ((total_victimas_ultimo_anio_moto - total_victimas_anio_anterior_moto) / total_victimas_anio_anterior_moto * 100)
+        # Después:
+        valor = safe_pct(
+            (total_victimas_ultimo_anio_moto - total_victimas_anio_anterior_moto),
+            total_victimas_anio_anterior_moto
+        )
+        if pd.isna(valor):
+            valor = 0  # o dejar NaN y mostrar "N/D" si se prefiere
         fig = go.Figure(go.Indicator(domain={"x": [0, 1], "y": [0, 1]},value=valor,mode="gauge+number+delta",title={"text": f"Objetivo: {objetivo}%"},delta={"reference": objetivo,"increasing": {"color": "red"},"decreasing": {"color": "green"},},gauge={"axis": {"range": [86, -100]},"bar": {"color": "orange"},"threshold": {"line": {"color": "white", "width": 4},"thickness": 0.75,"value": -7,},},))
         fig.update_layout(width=250, height=250)
         fig.update_traces(number={"suffix": "%"})
@@ -307,7 +335,15 @@ def dashboard():
         tasa_homicidios_ultimo_semestre = (total_homicidios_ultimo_semestre / poblacion_total * 100000)
         tasa_homicidios_semestre_anterior = (total_homicidios_semestre_anterior / poblacion_total * 100000)
         objetivo = -10
-        valor = ((tasa_homicidios_ultimo_semestre - tasa_homicidios_semestre_anterior) / tasa_homicidios_semestre_anterior) * 100
+        # Antes:
+        # valor = ((tasa_homicidios_ultimo_semestre - tasa_homicidios_semestre_anterior) / tasa_homicidios_semestre_anterior) * 100
+        # Después:
+        valor = safe_pct(
+            (tasa_homicidios_ultimo_semestre - tasa_homicidios_semestre_anterior),
+            tasa_homicidios_semestre_anterior
+        )
+        if pd.isna(valor):
+            valor = 0
         fig = go.Figure(go.Indicator(domain={"x": [0, 1], "y": [0, 1]},value=valor,mode="gauge+number+delta",title={"text": f"Objetivo: {objetivo}%"},delta={"reference": objetivo,"increasing": {"color": "red"},"decreasing": {"color": "green"},},gauge={"axis": {"range": [80, -100]},"bar": {"color": "orange"},"threshold": {"line": {"color": "white", "width": 4},"thickness": 0.75,"value": -10,},},))
         fig.update_layout(width=250, height=250)
         fig.update_traces(number={"suffix": "%"})
@@ -324,8 +360,16 @@ def dashboard():
         df_anio_anterior_conductor = df_filtrado[(df_filtrado["FECHA"] >= fecha_hace_dos_anios) & (df_filtrado["FECHA"] < fecha_hace_un_anio) & (df_filtrado["ROL"] == "CONDUCTOR")]
         total_victimas_ultimo_anio_conductor = df_ultimo_anio_conductor.shape[0]
         total_victimas_anio_anterior_conductor = df_anio_anterior_conductor.shape[0]
-        diferencia_porcentual = ((total_victimas_ultimo_anio_conductor - total_victimas_anio_anterior_conductor ) / total_victimas_anio_anterior_conductor * 100)
-        valor = diferencia_porcentual
+        # Antes:
+        # diferencia_porcentual = ((total_victimas_ultimo_anio_conductor - total_victimas_anio_anterior_conductor ) / total_victimas_anio_anterior_conductor * 100)
+        # valor = diferencia_porcentual
+        # Después:
+        valor = safe_pct(
+            (total_victimas_ultimo_anio_conductor - total_victimas_anio_anterior_conductor),
+            total_victimas_anio_anterior_conductor
+        )
+        if pd.isna(valor):
+            valor = 0
         objetivo = -25
         fig = go.Figure(go.Indicator(domain={"x": [0, 1], "y": [0, 1]},value=valor,mode="gauge+number+delta",title={"text": f"Objetivo: {objetivo}%"},delta={"reference": objetivo,"increasing": {"color": "red"},"decreasing": {"color": "green"},},gauge={"axis": {"range": [50, -100]},"bar": {"color": "orange"},"threshold": {"line": {"color": "white", "width": 4},"thickness": 0.75,"value": -25,},},))
         fig.update_layout(width=250, height=250)
