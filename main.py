@@ -73,7 +73,7 @@ def dashboard():
         filtro_edad = list(range(edad_min_filtro, edad_max_filtro + 1))
     elif edad_min_filtro is not None: 
         filtro_edad = list(range(edad_min_filtro, max(edades_unicas) + 1))
-    elif edad_max_filtro es not None: 
+    elif edad_max_filtro is not None: 
         filtro_edad = list(range(min(edades_unicas), edad_max_filtro + 1))
     else: 
         filtro_edad = None
