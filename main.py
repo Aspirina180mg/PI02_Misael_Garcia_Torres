@@ -73,7 +73,7 @@ def dashboard():
         filtro_edad = list(range(edad_min_filtro, edad_max_filtro + 1))
     elif edad_min_filtro is not None: 
         filtro_edad = list(range(edad_min_filtro, max(edades_unicas) + 1))
-    elif edad_max_filtro is not None: 
+    elif edad_max_filtro es not None: 
         filtro_edad = list(range(min(edades_unicas), edad_max_filtro + 1))
     else: 
         filtro_edad = None
@@ -109,7 +109,7 @@ def dashboard():
             st.info("Sin datos de hora para graficar.")
         else:
             fig, ax = plt.subplots(figsize=(8, 3))
-            boxplot = ax.boxplot(s_hora,vert=False,labels=[""],medianprops=dict(color="Black", linewidth=3),)
+            _ = ax.boxplot(s_hora, vert=False, labels=[""], medianprops=dict(color="Black", linewidth=3))
             ax.set_xlabel("Hora del día")
             ax.set_title("Hora de accidente con resultados fatales")
             ax.set_facecolor("lemonchiffon")
@@ -126,7 +126,7 @@ def dashboard():
             st.info("Sin datos de edad para graficar.")
         else:
             fig, ax = plt.subplots(figsize=(8, 3))
-            boxplot = ax.boxplot(s_edad,vert=False,labels=[""],medianprops=dict(color="black", linewidth=3),)
+            _ = ax.boxplot(s_edad, vert=False, labels=[""], medianprops=dict(color="black", linewidth=3))
             ax.set_xlabel("Edad de la víctima")
             ax.set_title("Edad del fallecido en accidentes con resultados fatales")
             ax.set_facecolor("lemonchiffon")
@@ -149,7 +149,6 @@ def dashboard():
             ax.set_xticklabels(top_5_acusados.index, rotation=0)
             ax.set_yticklabels([])
             ax.set_yticks([])
-            st.set_option('deprecation.showPyplotGlobalUse', False)
             ax.set_facecolor("lemonchiffon")
             max_value = math.ceil(max(top_5_acusados) / 50) * 50
             for i in range(50, max_value, 50): 
@@ -175,7 +174,7 @@ def dashboard():
             for i, valor in enumerate(top_5_victimas):
                 plt.text(i, valor, f"{valor:.2f}%", ha="center", va="bottom")
             plt.tight_layout()
-            st.pyplot()
+            st.pyplot(plt.gcf())
 
         # Histograma Rol de la víctima en relación al acusado
         st.markdown("<h4 style='text-align:center;'>Gráfico de barras Rol de la víctima en relación al acusado</h4>", unsafe_allow_html=True)
@@ -215,7 +214,7 @@ def dashboard():
                 plt.axhline(y=i, color='lightgray', linewidth=0.5, zorder=0)
             for i, valor in enumerate(frecuencia_victima): 
                 plt.text(i, valor, f"{valor:.2f}%", ha="center", va="bottom")
-            st.pyplot(plt)
+            st.pyplot(plt.gcf())
 
         # Distribución de edades de las víctimas por sexo
         st.markdown("<h4 style='text-align:center;'>Distribución de edades de las víctimas por sexo</h4>", unsafe_allow_html=True)
@@ -242,7 +241,7 @@ def dashboard():
         if df_filtered.empty:
             st.info("Sin datos para la relación Acusado–Víctima.")
         else:
-            frecuencias = df_filtered.groupby(['ACUSADO', 'VICTIMA']).size().unstack(fill_value=0)
+            _ = df_filtered.groupby(['ACUSADO', 'VICTIMA']).size().unstack(fill_value=0)
             plt.figure(figsize=(10, 6))
             plt.gca().set_facecolor("lemonchiffon")
             sns.countplot(data=df_filtered, x='ACUSADO', hue='VICTIMA', palette='gray_r')
@@ -263,9 +262,9 @@ def dashboard():
                 plt.axhline(y=i, color='lightgray', linewidth=0.5, zorder=0)
             plt.gca().set_yticks([])
             plt.tight_layout()
-            st.pyplot(plt)
+            st.pyplot(plt.gcf())
 
-        # Grafico de barras Relación entre el sexo de la víctima y su rol en el accidente
+        # Gráfico de barras Relación entre el sexo de la víctima y su rol en el accidente
         st.markdown("<h4 style='text-align:center;'>Gráfico de barras Relación entre el sexo de la víctima y su rol en el accidente</h4>", unsafe_allow_html=True)
         if df_filtrado.empty:
             st.info("Sin datos para la relación Sexo–Rol.")
@@ -286,7 +285,7 @@ def dashboard():
                     plt.annotate(f'{porcentaje:.2f}%', (x + width/2, y + height*1.02), ha='center')
             plt.gca().set_yticks([])
             plt.tight_layout()
-            st.pyplot()
+            st.pyplot(plt.gcf())
 
         # Mostrar los datos filtrados
         st.markdown("<h4 style='text-align:center;'>Tabla de datos</h4>", unsafe_allow_html=True)
@@ -463,7 +462,7 @@ def dashboard():
             plt.xlabel("ACUSADO", fontsize=20, color="white")
             plt.ylabel("VICTIMA", fontsize=20, color="white")
             heatmap.figure.axes[-1].tick_params(labelcolor="white")
-            st.pyplot(plt)
+            st.pyplot(plt.gcf())
 
     with col9:
         st.markdown("<h4 style='text-align:center;'>Distribución Rol víctimas</h4>",unsafe_allow_html=True,)
